@@ -47,7 +47,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Editar Categoría</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="edit_employee_form" enctype="multipart/form-data">
+      <form action="#" method="POST" id="edit_employee_form" novalidate>
         @csrf
         <input type="hidden" name="categoria_id" id="categoria_id">
    
@@ -56,6 +56,7 @@
             <div class="col-lg">
               <label for="nombre_categoria">Nombre Categoría</label>
               <input type="text" name="nombre_categoria" id="nombre_categoria" class="form-control" required>
+              <div class="invalid-feedback">Categoría es obligatoria...</div>
             </div>
           </div>
         
@@ -155,6 +156,10 @@
       $("#edit_employee_form").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
+        if (!this.checkValidity()) {
+          e.preventDefault();
+          $(this).addClass('was-validated');
+        } else {
         $("#edit_employee_btn").text('Actualizando...');
         $.ajax({
           url: '{{ route('categoria.update') }}',
@@ -178,6 +183,7 @@
             $("#editEmployeeModal").modal('hide');
           }
         });
+      }
       });
 
 
