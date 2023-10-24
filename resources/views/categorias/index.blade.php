@@ -14,13 +14,14 @@
         <h5 class="modal-title" id="exampleModalLabel">Agregar Categoría</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="add_employee_form">
+      <form action="#" method="POST" id="add_employee_form" novalidate>
         @csrf
         <div class="modal-body p-4 bg-light">
           <div class="row">
             <div class="col-lg">
               <label for="nombre_categoria">Nombre Categoría</label>
               <input type="text" name="nombre_categoria" class="form-control" placeholder="Nombre Categoría" required>
+              <div class="invalid-feedback">Categoría es obligatoria...</div>
             </div>
            
           </div>
@@ -97,6 +98,10 @@
       $("#add_employee_form").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
+        if (!this.checkValidity()) {
+          e.preventDefault();
+          $(this).addClass('was-validated');
+        } else {
         $("#add_employee_btn").text('Agregando...');
         $.ajax({
           url: '{{ route('categoria.store') }}',
@@ -120,7 +125,9 @@
             $("#add_employee_form")[0].reset();
             $("#addEmployeeModal").modal('hide');
           }
+          
         });
+      }
       });
 
      
