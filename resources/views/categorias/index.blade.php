@@ -5,8 +5,8 @@
 
 
 
-{{-- add new employee modal start --}}
-<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+{{-- add new employee modal start  addCategoriaModal  --}}
+<div class="modal fade" id="addCategoriaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -14,7 +14,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Agregar Categoría</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="add_employee_form" novalidate>
+      <form action="#" method="POST" id="addCategoriaForm" novalidate>
         @csrf
         <div class="modal-body p-4 bg-light">
           <div class="row">
@@ -30,7 +30,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="add_employee_btn" class="btn btn-primary">Agregar Categoría</button>
+          <button type="submit" id="addCategoriaBoton" class="btn btn-primary">Agregar Categoría</button>
         </div>
       </form>
     </div>
@@ -39,7 +39,7 @@
 {{-- add new employee modal end --}}
 
 {{-- edit employee modal start --}}
-<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="editarCategoriaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -47,7 +47,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Editar Categoría</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="edit_employee_form" novalidate>
+      <form action="#" method="POST" id="editarCategoriaForm" novalidate>
         @csrf
         <input type="hidden" name="categoria_id" id="categoria_id">
    
@@ -64,7 +64,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="edit_employee_btn" class="btn btn-success">Actualizar Categoría</button>
+          <button type="submit" id="editarCategoriaBoton" class="btn btn-success">Actualizar Categoría</button>
         </div>
       </form>
     </div>
@@ -79,10 +79,10 @@
         <div class="card shadow">
           <div class="card-header bg-primary d-flex justify-content-between align-items-center">
             <h3 class="text-light">Categorías</h3>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"><i
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addCategoriaModal"><i
                 class="bi-plus-circle me-2"></i>Crear nueva categoría</button>
           </div>
-          <div class="card-body" id="show_all_employees">
+          <div class="card-body" id="mostrar_todas_categorias">
             <h1 class="text-center text-secondary my-5">Cargando categorías...</h1>
           </div>
         </div>
@@ -96,14 +96,14 @@
     $(function() {
 
       // crear categoria...
-      $("#add_employee_form").submit(function(e) {
+      $("#addCategoriaForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#add_employee_btn").text('Agregando...');
+        $("#addCategoriaBoton").text('Agregando...');
         $.ajax({
           url: '{{ route('categoria.store') }}',
           method: 'post',
@@ -122,9 +122,9 @@
               
             mostrarCategorias();
             }
-            $("#add_employee_btn").text('Add Employee');
-            $("#add_employee_form")[0].reset();
-            $("#addEmployeeModal").modal('hide');
+            $("#addCategoriaBoton").text('Add Employee');
+            $("#addCategoriaForm")[0].reset();
+            $("#addCategoriaModal").modal('hide');
           }
           
         });
@@ -153,14 +153,14 @@
       });
 
       // update employee ajax request
-      $("#edit_employee_form").submit(function(e) {
+      $("#editarCategoriaForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#edit_employee_btn").text('Actualizando...');
+        $("#editarCategoriaBoton").text('Actualizando...');
         $.ajax({
           url: '{{ route('categoria.update') }}',
           method: 'post',
@@ -178,9 +178,9 @@
               )
               mostrarCategorias();
             }
-            $("#edit_employee_btn").text('Actualizar Categoría');
-            $("#edit_employee_form")[0].reset();
-            $("#editEmployeeModal").modal('hide');
+            $("#editarCategoriaBoton").text('Actualizar Categoría');
+            $("#editarCategoriaForm")[0].reset();
+            $("#editarCategoriaModal").modal('hide');
           }
         });
       }
@@ -196,8 +196,8 @@
         let id = $(this).attr('id');
         let csrf = '{{ csrf_token() }}';
         Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
+          title: 'Seguro que deseas borrar ?',
+          text: "Esta acción es irreversible !",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -234,7 +234,7 @@
           url: '{{ route('categoria.fetchAll') }}',
           method: 'get',
           success: function(response) {
-            $("#show_all_employees").html(response);
+            $("#mostrar_todas_categorias").html(response);
             $("table").DataTable({
               order: [0, 'desc']
             });
