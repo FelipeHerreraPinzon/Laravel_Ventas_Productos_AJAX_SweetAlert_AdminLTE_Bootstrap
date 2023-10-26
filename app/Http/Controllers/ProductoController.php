@@ -26,6 +26,7 @@ class ProductoController extends Controller
               <tr>
                 <th>ID</th>
                 <th>Nombre Producto</th>
+                <th>Categoría</th>
                 <th>Precio</th>
                 <th>Stock</th>
                 <th>Action</th>
@@ -36,6 +37,7 @@ class ProductoController extends Controller
 				$output .= '<tr>
                 <td>' . $producto->id . '</td>
                 <td>' . $producto->nombre_producto . '</td>
+                <td>' . $producto->categoria . '</td>
                 <td>' . $producto->precio . '</td>
                 <td>' . $producto->stock . '</td>
                 <td>
@@ -58,7 +60,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        $datos = ['nombre_producto' => $request->nombre_producto, 'precio' => $request->precio, 'stock' => $request->stock ];
+        $datos = ['nombre_producto' => $request->nombre_producto, 'categoria' => $request->categoria, 'precio' => $request->precio, 'stock' => $request->stock ];
 		Producto::create($datos);
 		return response()->json([
 			'status' => 200,

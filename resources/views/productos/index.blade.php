@@ -24,6 +24,10 @@
               <input type="text" name="nombre_producto" class="form-control" placeholder="Nombre Producto" required>
               <div class="invalid-feedback">Producto es obligatorio...</div>
 
+              <label for="nombre_producto">Categoría</label>
+              <input type="text" name="categoria" class="form-control" placeholder="Nombre Producto" required>
+              <div class="invalid-feedback">Categoría es obligatorio...</div>
+
               <label for="precio">Precio</label>
               <input type="number" name="precio" class="form-control" placeholder="Precio" required>
               <div class="invalid-feedback">Precio Obligatorio...</div>
@@ -69,6 +73,10 @@
               <label for="nombre_producto">Nombre Producto</label>
               <input type="text" name="nombre_producto" id="nombre_producto" class="form-control"  required>
               <div class="invalid-feedback">Producto es obligatorio...</div>
+
+              <label for="categoria">Categoría</label>
+              <input type="text" name="categoria" id="categoria" class="form-control"  required>
+              <div class="invalid-feedback">Categoria es obligatorio...</div>
 
               <label for="precio">Precio</label>
               <input type="number" name="precio" id="precio" class="form-control" required>
@@ -168,6 +176,7 @@
           success: function(response) {
             $("#nombre_producto").val(response.nombre_producto);
             $("#precio").val(response.precio);
+            $("#categoria").val(response.categoria);
             $("#stock").val(response.stock);
             $("#producto_id").val(response.id);
            
