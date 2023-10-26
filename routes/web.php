@@ -29,11 +29,11 @@ Route::post('categoria/actualizar', [CategoriaController::class, 'update'])->nam
 
 // productos
 Route::get('productos', [ProductoController::class, 'index'])->name('productos.index');
-Route::post('producto/agregar', [CategoriaController::class, 'store'])->name('producto.store');
-Route::get('productos/mostrar', [CategoriaController::class, 'fetchAll'])->name('producto.fetchAll');
-Route::delete('productos/borrar', [CategoriaController::class, 'delete'])->name('producto.delete');
-Route::get('productos/borrar', [CategoriaController::class, 'edit'])->name('producto.edit');
-Route::post('productos/actualizar', [CategoriaController::class, 'update'])->name('producto.update'); 
+Route::post('producto/agregar', [ProductoController::class, 'store'])->name('producto.store');
+Route::get('productos/mostrar', [ProductoController::class, 'fetchAll'])->name('producto.fetchAll');
+Route::delete('productos/borrar', [ProductoController::class, 'delete'])->name('producto.delete');
+Route::get('productos/borrar', [ProductoController::class, 'edit'])->name('producto.edit');
+Route::post('productos/actualizar', [ProductoController::class, 'update'])->name('producto.update'); 
 
 /*
 // ventas

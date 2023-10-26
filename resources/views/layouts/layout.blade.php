@@ -102,7 +102,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('index')}}" class="nav-link">
+            <a href="{{route('productos.index')}}" class="nav-link">
               <i class="fa-brands fa-product-hunt mr-2 ml-2"></i>
               <p>
                 Productos
@@ -118,7 +118,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="" class="nav-link">
+            <a href="{{route('categorias.index')}}" class="nav-link">
               <i class="fa-solid fa-circle-info mr-2 ml-2"></i>
               <p>
                 Categorías

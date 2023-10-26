@@ -4,8 +4,9 @@
 
 
 
-{{-- agregar producto MODAL inicio --}}
-<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+
+{{-- add new employee modal start  addCategoriaModal  --}}
+<div class="modal fade" id="addCategoriaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -13,14 +14,25 @@
         <h5 class="modal-title" id="exampleModalLabel">Agregar Producto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="add_employee_form" novalidate>
+      <form action="#" method="POST" id="addCategoriaForm" novalidate>
         @csrf
         <div class="modal-body p-4 bg-light">
           <div class="row">
             <div class="col-lg">
-              <label for="nombre_categoria">Nombre Categoría</label>
-              <input type="text" name="nombre_categoria" class="form-control" placeholder="Nombre Categoría" required>
-              <div class="invalid-feedback">Categoría es obligatoria...</div>
+
+              <label for="nombre_producto">Nombre Producto</label>
+              <input type="text" name="nombre_producto" class="form-control" placeholder="Nombre Producto" required>
+              <div class="invalid-feedback">Producto es obligatorio...</div>
+
+              <label for="precio">Precio</label>
+              <input type="number" name="precio" class="form-control" placeholder="Precio" required>
+              <div class="invalid-feedback">Precio Obligatorio...</div>
+
+              <label for="precio">Stock</label>
+              <input type="number" name="stock" class="form-control" placeholder="Stock" required>
+              <div class="invalid-feedback">Precio Obligatorio...</div>
+
+
             </div>
            
           </div>
@@ -29,47 +41,56 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="add_employee_btn" class="btn btn-primary">Agregar Categoría</button>
+          <button type="submit" id="addCategoriaBoton" class="btn btn-primary">Agregar Producto</button>
         </div>
       </form>
     </div>
   </div>
 </div>
-{{-- agregar producto MODAL fin --}}
+{{-- add new employee modal end --}}
 
-{{-- editar producto MODAL inicio --}}
-<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+{{-- edit employee modal start --}}
+<div class="modal fade" id="editarCategoriaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Editar Categoría</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="edit_employee_form" novalidate>
+      <form action="#" method="POST" id="editarCategoriaForm" novalidate>
         @csrf
-        <input type="hidden" name="categoria_id" id="categoria_id">
+        <input type="hidden" name="producto_id" id="producto_id">
    
         <div class="modal-body p-4 bg-light">
           <div class="row">
             <div class="col-lg">
-              <label for="nombre_categoria">Nombre Categoría</label>
-              <input type="text" name="nombre_categoria" id="nombre_categoria" class="form-control" required>
-              <div class="invalid-feedback">Categoría es obligatoria...</div>
+
+              <label for="nombre_producto">Nombre Producto</label>
+              <input type="text" name="nombre_producto" id="nombre_producto" class="form-control"  required>
+              <div class="invalid-feedback">Producto es obligatorio...</div>
+
+              <label for="precio">Precio</label>
+              <input type="number" name="precio" id="precio" class="form-control" required>
+              <div class="invalid-feedback">Precio Obligatorio...</div>
+
+              <label for="precio">Precio</label>
+              <input type="number" name="stock" id="stock"  class="form-control"  required>
+              <div class="invalid-feedback">Precio Obligatorio...</div>
+
             </div>
           </div>
         
-     
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="edit_employee_btn" class="btn btn-success">Actualizar Categoría</button>
+          <button type="submit" id="editarCategoriaBoton" class="btn btn-success">Actualizar Producto</button>
         </div>
       </form>
     </div>
   </div>
 </div>
-{{-- editar producto MODAL fin --}}
+{{-- edit employee modal end --}}
 
 <body class="bg-light">
   <div class="container">
@@ -77,12 +98,12 @@
       <div class="col-lg-12">
         <div class="card shadow">
           <div class="card-header bg-primary d-flex justify-content-between align-items-center">
-            <h3 class="text-light">Categorías</h3>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"><i
-                class="bi-plus-circle me-2"></i>Crear nueva categoría</button>
+            <h3 class="text-light">Productos</h3>
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addCategoriaModal"><i
+                class="bi-plus-circle me-2"></i>Agregar Producto</button>
           </div>
-          <div class="card-body" id="show_all_employees">
-            <h1 class="text-center text-secondary my-5">Cargando categorías...</h1>
+          <div class="card-body" id="mostrar_todas_categorias">
+            <h1 class="text-center text-secondary my-5">Cargando productos...</h1>
           </div>
         </div>
       </div>
@@ -92,19 +113,20 @@
 
 
   <script>
+    
     $(function() {
 
       // crear producto...
-      $("#add_employee_form").submit(function(e) {
+      $("#addCategoriaForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#add_employee_btn").text('Agregando...');
+        $("#addCategoriaBoton").text('Agregando...');
         $.ajax({
-          url: '{{ route('categoria.store') }}',
+          url: '{{ route('producto.store') }}',
           method: 'post',
           data: fd,
           cache: false,
@@ -121,9 +143,9 @@
               
             mostrarCategorias();
             }
-            $("#add_employee_btn").text('Add Employee');
-            $("#add_employee_form")[0].reset();
-            $("#addEmployeeModal").modal('hide');
+            $("#addCategoriaBoton").text('Add Employee');
+            $("#addCategoriaForm")[0].reset();
+            $("#addCategoriaModal").modal('hide');
           }
           
         });
@@ -132,36 +154,38 @@
 
      
 
-      // editar producto ...
+      // editar categoría ...
       $(document).on('click', '.editIcon', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
         $.ajax({
-          url: '{{ route('categoria.edit') }}',
+          url: '{{ route('producto.edit') }}',
           method: 'get',
           data: {
             id: id,
             _token: '{{ csrf_token() }}'
           },
           success: function(response) {
-            $("#nombre_categoria").val(response.nombre_categoria);
-            $("#categoria_id").val(response.id);
+            $("#nombre_producto").val(response.nombre_producto);
+            $("#precio").val(response.precio);
+            $("#stock").val(response.stock);
+            $("#producto_id").val(response.id);
            
           }
         });
       });
 
       // update employee ajax request
-      $("#edit_employee_form").submit(function(e) {
+      $("#editarCategoriaForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#edit_employee_btn").text('Actualizando...');
+        $("#editarCategoriaBoton").text('Actualizando...');
         $.ajax({
-          url: '{{ route('categoria.update') }}',
+          url: '{{ route('producto.update') }}',
           method: 'post',
           data: fd,
           cache: false,
@@ -177,9 +201,9 @@
               )
               mostrarCategorias();
             }
-            $("#edit_employee_btn").text('Actualizar Categoría');
-            $("#edit_employee_form")[0].reset();
-            $("#editEmployeeModal").modal('hide');
+            $("#editarCategoriaBoton").text('Actualizar Categoría');
+            $("#editarCategoriaForm")[0].reset();
+            $("#editarCategoriaModal").modal('hide');
           }
         });
       }
@@ -195,8 +219,8 @@
         let id = $(this).attr('id');
         let csrf = '{{ csrf_token() }}';
         Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
+          title: 'Seguro que deseas borrar ?',
+          text: "Esta acción es irreversible !",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -205,7 +229,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
             $.ajax({
-              url: '{{ route('categoria.delete') }}', 
+              url: '{{ route('producto.delete') }}', 
               method: 'delete',
               data: {
                 id: id,
@@ -225,15 +249,15 @@
         })
       });
 
-      // mostrar producto
+      // mostrar categorias
       mostrarCategorias();
 
       function mostrarCategorias() {
         $.ajax({
-          url: '{{ route('categoria.fetchAll') }}',
+          url: '{{ route('producto.fetchAll') }}',
           method: 'get',
           success: function(response) {
-            $("#show_all_employees").html(response);
+            $("#mostrar_todas_categorias").html(response);
             $("table").DataTable({
               order: [0, 'desc']
             });
@@ -246,6 +270,13 @@
 
   </script>
 </body>
+
+
+
+
+
+
+
 
 
 
