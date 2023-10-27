@@ -41,7 +41,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="agregarProductoBoton" class="btn btn-primary">Crear Venta</button>
+          <button type="submit" id="agregarProductoBoton" class="btn btn-success">Crear Venta</button>
         </div>
       </form>
     </div>
@@ -60,15 +60,12 @@
       </div>
       <form action="#" method="POST" id="editarProductoForm" novalidate>
         @csrf
-        <input type="hidden" name="producto_id" id="producto_id">
+        <input type="hidden" name="venta_id" id="venta_id">
    
         <div class="modal-body p-4 bg-light">
           <div class="row">
             <div class="col-lg">
 
-              <label for="nombre_producto">Nombre Producto</label>
-              <input type="text" name="nombre_producto" id="nombre_producto" class="form-control"  required>
-              <div class="invalid-feedback">Producto es obligatorio...</div>
 
               <label>Producto</label>
               <select name="producto" class="form-control" id="producto" required>
@@ -84,13 +81,11 @@
 
 
 
-              <label for="precio">Precio</label>
-              <input type="number" name="precio" id="precio" class="form-control" required>
+              <label for="cantidad">Cantidad</label>
+              <input type="number" name="cantidad" id="cantidad" class="form-control" required>
               <div class="invalid-feedback">Precio Obligatorio...</div>
 
-              <label for="precio">Stock</label>
-              <input type="number" name="stock" id="stock"  class="form-control"  required>
-              <div class="invalid-feedback">Stock Obligatorio...</div>
+             
 
             </div>
           </div>
@@ -211,14 +206,13 @@
           },
           success: function(response) {
 
-            $("#nombre_producto").val(response.nombre_producto);
-            $("#precio").val(response.precio);
-            $("#stock").val(response.stock);
-            $("#producto_id").val(response.id);
+            $("#producto").val(response.producto);
+            $("#cantidad").val(response.cantidad);
+            $("#venta_id").val(response.id);
 
-            var categoriaActual = response.categoria;
-            $("#categoria option").each(function() {
-                if ($(this).val() == categoriaActual) {
+            var productoActual = response.producto;
+            $("#producto option").each(function() {
+                if ($(this).val() == productoActual) {
                     $(this).prop('selected', true);
                 }
             });
@@ -248,7 +242,7 @@
             if (response.status == 200) {
               Swal.fire(
                 'Actualizado!',
-                'Producto actualizado correctamente!',
+                'Venta actualizada correctamente!',
                 'success'
               )
               mostrarProductos();

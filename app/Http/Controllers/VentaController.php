@@ -53,13 +53,7 @@ class VentaController extends Controller
 		}
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -73,35 +67,42 @@ class VentaController extends Controller
 		]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Venta $venta)
-    {
-        //
-    }
+ 
 
-    /**
+        /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Venta $venta)
-    {
-        //
-    }
+    public function edit(Request $request) {
+		$id = $request->id;
+		$venta = Venta::find($id);
+		return response()->json($venta);
+   
+	}
 
-    /**
+     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Venta $venta)
-    {
-        //
-    }
+    public function update(Request $request) {
+		
+		$venta = Venta::find($request->venta_id);
+
+
+		$datosActualizados = ['producto' => $request->producto, 'cantidad' => $request->cantidad];
+
+		$venta->update($datosActualizados);
+		return response()->json([
+			'status' => 200,
+		]);
+	}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Venta $venta)
-    {
-        //
-    }
+    public function delete(Request $request) {
+		$id = $request->id;
+	//	$emp = Venta::find($id);
+		
+        Venta::destroy($id);
+		
+	}
 }
