@@ -19,6 +19,8 @@ use App\Http\Controllers\CategoriaController;
 
 Route::get('/', [CategoriaController::class, 'index'])->name('index');
 
+Route::get('getcategorias', [CategoriaController::class, 'getCategorias'])->name('getCategorias');
+
 Route::get('categorias', [CategoriaController::class, 'index'])->name('categorias.index');
 Route::post('categoria/agregar', [CategoriaController::class, 'store'])->name('categoria.store');
 Route::get('categoria/mostrar', [CategoriaController::class, 'fetchAll'])->name('categoria.fetchAll');

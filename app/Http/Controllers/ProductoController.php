@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
-use App\Http\Controllers\Controller;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+  
+
     public function index()
-    {
-        return view('productos.index');
-    }
+{
+    $categorias = Categoria::all();
+
+    return view('productos.index', compact('categorias'));
+}
 
     public function fetchAll()
     {
@@ -41,7 +46,7 @@ class ProductoController extends Controller
                 <td>' . $producto->precio . '</td>
                 <td>' . $producto->stock . '</td>
                 <td>
-                  <a href="#" id="' . $producto->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editarCategoriaModal"><i class="bi-pencil-square h4"></i></a>
+                  <a href="#" id="' . $producto->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editarProductoModal"><i class="bi-pencil-square h4"></i></a>
 
                   <a href="#" id="' . $producto->id . '" class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i></a>
                 </td>
@@ -84,6 +89,7 @@ class ProductoController extends Controller
 		$id = $request->id;
 		$producto = Producto::find($id);
 		return response()->json($producto);
+   
 	}
 
     /**
@@ -94,7 +100,7 @@ class ProductoController extends Controller
 		$producto = Producto::find($request->producto_id);
 
 
-		$datosActualizadoos = ['nombre_producto' => $request->nombre_producto, 'precio' => $request->precio, 'stock' => $request->stock];
+		$datosActualizadoos = ['nombre_producto' => $request->nombre_producto, 'categoria' => $request->categoria, 'precio' => $request->precio, 'stock' => $request->stock];
 
 		$producto->update($datosActualizadoos);
 		return response()->json([

@@ -16,6 +16,12 @@ class CategoriaController extends Controller
         return view('categorias.index');
     }
 
+    public function getCategorias(){
+
+      $categorias = Categoria::all();
+    return response()->json($categorias);
+    }
+
     public function fetchAll()
     {
         $categorias = Categoria::all();

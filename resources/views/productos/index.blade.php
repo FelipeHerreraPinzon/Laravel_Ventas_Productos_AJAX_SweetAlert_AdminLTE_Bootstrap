@@ -5,8 +5,8 @@
 
 
 
-{{-- add new employee modal start  addCategoriaModal  --}}
-<div class="modal fade" id="addCategoriaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+{{-- agregar Producto modal  --}}
+<div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -14,7 +14,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Agregar Producto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="addCategoriaForm" novalidate>
+      <form action="#" method="POST" id="agregarProductoForm" novalidate>
         @csrf
         <div class="modal-body p-4 bg-light">
           <div class="row">
@@ -24,9 +24,16 @@
               <input type="text" name="nombre_producto" class="form-control" placeholder="Nombre Producto" required>
               <div class="invalid-feedback">Producto es obligatorio...</div>
 
-              <label for="nombre_producto">Categoría</label>
-              <input type="text" name="categoria" class="form-control" placeholder="Nombre Producto" required>
-              <div class="invalid-feedback">Categoría es obligatorio...</div>
+
+              
+
+              <label>Categoría</label>
+              <select name="categoria" class="form-control" id="categoria" required>
+                  <option disabled readonly selected>Selecciona Categoría</option>
+              </select>
+              <div class="invalid-feedback">Categoría de producto es requerida!</div>
+
+            
 
               <label for="precio">Precio</label>
               <input type="number" name="precio" class="form-control" placeholder="Precio" required>
@@ -45,7 +52,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="addCategoriaBoton" class="btn btn-primary">Agregar Producto</button>
+          <button type="submit" id="agregarProductoBoton" class="btn btn-primary">Agregar Producto</button>
         </div>
       </form>
     </div>
@@ -54,7 +61,7 @@
 {{-- add new employee modal end --}}
 
 {{-- edit employee modal start --}}
-<div class="modal fade" id="editarCategoriaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -62,7 +69,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="editarCategoriaForm" novalidate>
+      <form action="#" method="POST" id="editarProductoForm" novalidate>
         @csrf
         <input type="hidden" name="producto_id" id="producto_id">
    
@@ -74,17 +81,27 @@
               <input type="text" name="nombre_producto" id="nombre_producto" class="form-control"  required>
               <div class="invalid-feedback">Producto es obligatorio...</div>
 
-              <label for="categoria">Categoría</label>
-              <input type="text" name="categoria" id="categoria" class="form-control"  required>
-              <div class="invalid-feedback">Categoria es obligatorio...</div>
+              <label>Categoría Producto</label>
+              <select name="categoria" class="form-control" id="categoria" required>
+             
+                     <?php
+                                foreach($categorias as $categoria)
+                                {
+                                      echo  '<option value="'.$categoria["nombre_categoria"].'">'.$categoria["nombre_categoria"].'</option>';
+                                }
+                    ?>
+              </select>
+              <div class="invalid-feedback">Categoria de producto es requerida!</div>
+
+
 
               <label for="precio">Precio</label>
               <input type="number" name="precio" id="precio" class="form-control" required>
               <div class="invalid-feedback">Precio Obligatorio...</div>
 
-              <label for="precio">Precio</label>
+              <label for="precio">Stock</label>
               <input type="number" name="stock" id="stock"  class="form-control"  required>
-              <div class="invalid-feedback">Precio Obligatorio...</div>
+              <div class="invalid-feedback">Stock Obligatorio...</div>
 
             </div>
           </div>
@@ -92,7 +109,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="editarCategoriaBoton" class="btn btn-success">Actualizar Producto</button>
+          <button type="submit" id="editarProductoBoton" class="btn btn-success">Actualizar Producto</button>
         </div>
       </form>
     </div>
@@ -107,7 +124,7 @@
         <div class="card shadow">
           <div class="card-header bg-primary d-flex justify-content-between align-items-center">
             <h3 class="text-light">Productos</h3>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addCategoriaModal"><i
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#agregarProductoModal"><i
                 class="bi-plus-circle me-2"></i>Agregar Producto</button>
           </div>
           <div class="card-body" id="mostrar_todas_categorias">
@@ -120,19 +137,28 @@
 
 
 
+
+
+
+
   <script>
+
+
+
     
     $(function() {
 
+    
+
       // crear producto...
-      $("#addCategoriaForm").submit(function(e) {
+      $("#agregarProductoForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#addCategoriaBoton").text('Agregando...');
+        $("#agregarProductoBoton").text('Agregando...');
         $.ajax({
           url: '{{ route('producto.store') }}',
           method: 'post',
@@ -144,16 +170,16 @@
           success: function(response) {
             if (response.status == 200) {
               Swal.fire(
-                'Agregada!',
-                'Categoría creada exitosamente!',
+                'Agregado!',
+                'Producto creado exitosamente!',
                 'success'
               )
               
-            mostrarCategorias();
+            mostrarProductos();
             }
-            $("#addCategoriaBoton").text('Add Employee');
-            $("#addCategoriaForm")[0].reset();
-            $("#addCategoriaModal").modal('hide');
+            $("#agregarProductoBoton").text('Agregar Producto');
+            $("#agregarProductoForm")[0].reset();
+            $("#agregarProductoModal").modal('hide');
           }
           
         });
@@ -162,7 +188,7 @@
 
      
 
-      // editar categoría ...
+      // editar producto ...
       $(document).on('click', '.editIcon', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
@@ -174,25 +200,32 @@
             _token: '{{ csrf_token() }}'
           },
           success: function(response) {
+
             $("#nombre_producto").val(response.nombre_producto);
             $("#precio").val(response.precio);
-            $("#categoria").val(response.categoria);
             $("#stock").val(response.stock);
             $("#producto_id").val(response.id);
-           
+
+            var categoriaActual = response.categoria;
+            $("#categoria option").each(function() {
+                if ($(this).val() == categoriaActual) {
+                    $(this).prop('selected', true);
+                }
+            });
+    
           }
         });
       });
 
-      // update employee ajax request
-      $("#editarCategoriaForm").submit(function(e) {
+      // actualizar producto
+      $("#editarProductoForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#editarCategoriaBoton").text('Actualizando...');
+        $("#editarProductoBoton").text('Actualizando...');
         $.ajax({
           url: '{{ route('producto.update') }}',
           method: 'post',
@@ -205,14 +238,14 @@
             if (response.status == 200) {
               Swal.fire(
                 'Actualizado!',
-                'Categoría actualizada correctamente!',
+                'Producto actualizado correctamente!',
                 'success'
               )
-              mostrarCategorias();
+              mostrarProductos();
             }
-            $("#editarCategoriaBoton").text('Actualizar Categoría');
-            $("#editarCategoriaForm")[0].reset();
-            $("#editarCategoriaModal").modal('hide');
+            $("#editarProductoBoton").text('Actualizar Producto');
+            $("#editarProductoForm")[0].reset();
+            $("#editarProductoModal").modal('hide');
           }
         });
       }
@@ -222,7 +255,7 @@
 
        
 
-      // delete employee ajax request
+      // borrar producto
       $(document).on('click', '.deleteIcon', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
@@ -251,17 +284,17 @@
                   'Your file has been deleted.',
                   'success'
                 )
-                mostrarCategorias();
+                mostrarProductos();
               }
             });
           }
         })
       });
 
-      // mostrar categorias
-      mostrarCategorias();
+      // mostrar productos
+      mostrarProductos();
 
-      function mostrarCategorias() {
+      function mostrarProductos() {
         $.ajax({
           url: '{{ route('producto.fetchAll') }}',
           method: 'get',
@@ -275,6 +308,26 @@
       }
     });
 
+      /// obtener categorias en SELECT
+      $(document).ready(function() {
+        $.get("{{ route('getCategorias') }}", function(data) {
+            var select = $("#categoria");
+            select.empty();
+            select.append($('<option>', {
+                value: '',
+                text: 'Selecciona Categoría',
+                selected: 'selected',
+                   disabled: 'disabled'
+            })); 
+            $.each(data, function(key, value) {
+                select.append($('<option>', {
+                    value: value.nombre_categoria,
+                    text: value.nombre_categoria,
+                    
+                }));
+            });
+        });
+    });
 
 
   </script>

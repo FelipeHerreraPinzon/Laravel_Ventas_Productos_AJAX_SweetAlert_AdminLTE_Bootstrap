@@ -122,7 +122,7 @@
               
             mostrarCategorias();
             }
-            $("#addCategoriaBoton").text('Add Employee');
+            $("#addCategoriaBoton").text('Agregar Categoría');
             $("#addCategoriaForm")[0].reset();
             $("#addCategoriaModal").modal('hide');
           }
