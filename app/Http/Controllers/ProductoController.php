@@ -21,6 +21,14 @@ class ProductoController extends Controller
     return view('productos.index', compact('categorias'));
 }
 
+
+public function getProductos(){
+
+  $productos = Producto::all();
+return response()->json($productos);
+}
+
+
     public function fetchAll()
     {
         $productos = Producto::all();

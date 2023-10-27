@@ -102,18 +102,18 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('productos.index')}}" class="nav-link">
-              <i class="fa-brands fa-product-hunt mr-2 ml-2"></i>
+            <a href="{{route('ventas.index')}}" class="nav-link">
+             <i class="fa-solid fa-chart-line mr-2 ml-2"></i>
               <p>
-                Productos
+                Ventas
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="" class="nav-link">
-             <i class="fa-solid fa-chart-line mr-2 ml-2"></i>
+            <a href="{{route('productos.index')}}" class="nav-link">
+              <i class="fa-brands fa-product-hunt mr-2 ml-2"></i>
               <p>
-                Ventas
+                Productos
               </p>
             </a>
           </li>

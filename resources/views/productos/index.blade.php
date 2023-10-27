@@ -122,7 +122,7 @@
     <div class="row my-3">
       <div class="col-lg-12">
         <div class="card shadow">
-          <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+          <div class="card-header bg-danger d-flex justify-content-between align-items-center">
             <h3 class="text-light">Productos</h3>
             <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#agregarProductoModal"><i
                 class="bi-plus-circle me-2"></i>Agregar Producto</button>
@@ -147,6 +147,27 @@
 
     
     $(function() {
+
+      /// obtener categorias en SELECT
+      $(document).ready(function() {
+        $.get("{{ route('getCategorias') }}", function(data) {
+            var select = $("#categoria");
+            select.empty();
+            select.append($('<option>', {
+                value: '',
+                text: 'Selecciona Categoría',
+                selected: 'selected',
+                   disabled: 'disabled'
+            })); 
+            $.each(data, function(key, value) {
+                select.append($('<option>', {
+                    value: value.nombre_categoria,
+                    text: value.nombre_categoria,
+                    
+                }));
+            });
+        });
+    });
 
     
 
@@ -308,26 +329,7 @@
       }
     });
 
-      /// obtener categorias en SELECT
-      $(document).ready(function() {
-        $.get("{{ route('getCategorias') }}", function(data) {
-            var select = $("#categoria");
-            select.empty();
-            select.append($('<option>', {
-                value: '',
-                text: 'Selecciona Categoría',
-                selected: 'selected',
-                   disabled: 'disabled'
-            })); 
-            $.each(data, function(key, value) {
-                select.append($('<option>', {
-                    value: value.nombre_categoria,
-                    text: value.nombre_categoria,
-                    
-                }));
-            });
-        });
-    });
+      
 
 
   </script>
