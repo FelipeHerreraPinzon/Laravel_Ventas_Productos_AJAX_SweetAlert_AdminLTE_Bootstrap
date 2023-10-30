@@ -49,6 +49,20 @@ Route::get('venta/borrar', [VentaController::class, 'edit'])->name('venta.edit')
 Route::post('venta/actualizar', [VentaController::class, 'update'])->name('venta.update');
 Route::get('getproductos', [ProductoController::class, 'getProductos'])->name('getProductos');
 
+/*
+<label>Producto</label>
+              <select name="producto" class="form-control" id="producto" required>
+             
+                     <?php
+                                foreach($productos as $producto)
+                                {
+                                      echo  '<option value="'.$producto["nombre_producto"].'">'.$producto["nombre_producto"].'</option>';
+                                }
+                    ?>
+              </select>
+              <div class="invalid-feedback">Producto es requerido!</div>
+*/
+
 
 
 

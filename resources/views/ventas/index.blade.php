@@ -6,7 +6,7 @@
 
 
 {{-- agregar Producto modal  --}}
-<div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="agregarVentaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -14,18 +14,28 @@
         <h5 class="modal-title" id="exampleModalLabel">Crear Venta</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="agregarProductoForm" novalidate>
+      <form action="#" method="POST" id="agregarVentaForm" novalidate>
         @csrf
         <div class="modal-body p-4 bg-light">
           <div class="row">
             <div class="col-lg">
 
               
-              <label>Producto</label>
+              <label>Productooo</label>
               <select name="producto" class="form-control" id="producto" required>
-                  <option disabled readonly selected>Selecciona Producto</option>
+                <option disabled selected></option> 
+             
+                     <?php
+                                foreach($productos as $producto)
+                                {
+                                  echo  '<option value="'.$producto["nombre_producto"].'" data-stock="'.$producto["stock"].'" data-id="'.$producto["id"].'">'.$producto["nombre_producto"].'</option>';   
+                              
+                                }
+                    ?>
+                   
               </select>
-              <div class="invalid-feedback">Producto requerido !</div>
+              <div class="invalid-feedback">Producto es requerido!</div>
+              <div id="infoStock"></div>
 
 
               <label for="precio">Cantidad</label>
@@ -41,7 +51,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" id="agregarProductoBoton" class="btn btn-success">Crear Venta</button>
+          <button type="submit" id="agregarVentaBoton" class="btn btn-success">Crear Venta</button>
         </div>
       </form>
     </div>
@@ -73,9 +83,10 @@
                      <?php
                                 foreach($productos as $producto)
                                 {
-                                      echo  '<option value="'.$producto["nombre_producto"].'">'.$producto["nombre_producto"].'</option>';
+                                      echo  '<option value="'.$producto["nombre_producto"].'" data-stock="'.$producto["stock"].'" data-id="'.$producto["id"].'">'.$producto["nombre_producto"].'</option>';
                                 }
                     ?>
+                   
               </select>
               <div class="invalid-feedback">Producto es requerido!</div>
 
@@ -108,7 +119,7 @@
         <div class="card shadow">
           <div class="card-header bg-success d-flex justify-content-between align-items-center">
             <h3 class="text-light">Ventas</h3>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#agregarProductoModal"><i
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#agregarVentaModal"><i
                 class="bi-plus-circle me-2"></i>Crear Venta</button>
           </div>
           <div class="card-body" id="mostrar_todas_categorias">
@@ -131,7 +142,7 @@
 
     
     $(function() {
-
+/*
       /// obtener productos en SELECT
       $(document).ready(function() {
         $.get("{{ route('getProductos') }}", function(data) {
@@ -152,18 +163,31 @@
             });
         });
     });
+*/
 
+     /// Informar Stock Stock
+     $("#producto").change(function() {
+          var productoSeleccionado = $("#producto").val();
+          var id = $("#producto").val();
+          var id = $("#producto option:selected").data("id");
+          var stock = $("#producto option:selected").data("stock");
+          console.log(productoSeleccionado)
+     
+          console.log(id)
+          $("#infoStock").html("De este producto" + " hay: " + stock + " unidades en stock");
+            
+        });
     
 
       // crear venta...
-      $("#agregarProductoForm").submit(function(e) {
+      $("#agregarVentaForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
-        $("#agregarProductoBoton").text('Agregando...');
+        $("#agregarVentaBoton").text('Agregando...');
         $.ajax({
           url: '{{ route('venta.store') }}',
           method: 'post',
@@ -182,9 +206,9 @@
               
             mostrarProductos();
             }
-            $("#agregarProductoBoton").text('Agregar Producto');
-            $("#agregarProductoForm")[0].reset();
-            $("#agregarProductoModal").modal('hide');
+            $("#agregarVentaBoton").text('Agregar Producto');
+            $("#agregarVentaForm")[0].reset();
+            $("#agregarVentaModal").modal('hide');
           }
           
         });
