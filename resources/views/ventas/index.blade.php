@@ -21,7 +21,7 @@
             <div class="col-lg">
 
               
-              <label>Productooo</label>
+              <label>Producto</label>
               <select name="producto" class="form-control" id="producto" required>
                 <option disabled selected></option> 
              
@@ -161,7 +161,7 @@
       // crear venta...
       $("#agregarVentaForm").submit(function(e) {
         e.preventDefault();
-        const fd = new FormData(this);
+        const formData = new FormData(this); 
      
     var stock = parseInt($("#producto option:selected").data("stock"), 10); // Obtener el stock entero
     var id_producto = parseInt($("#producto option:selected").data("id"), 10); // Obtener el id entero
@@ -171,7 +171,7 @@
       Swal.fire({
       icon: 'warning',
       title: 'No hay Stock suficiente',
-      text: 'solo quedan ' + stock + ' unidades, estás intentando comprar ' + cantidadCompra,
+      text: 'quedan ' + stock + ' unidades, estás intentando comprar ' + cantidadCompra,
     }) 
     } 
 
@@ -191,10 +191,11 @@
           $(this).addClass('was-validated');
         } else {
         $("#agregarVentaBoton").text('Agregando...');
+        formData.append('id_producto', id_producto);
         $.ajax({
           url: '{{ route('venta.store') }}',
           method: 'post',
-          data: fd,
+          data: formData,
           cache: false,
           contentType: false,
           processData: false,
@@ -205,7 +206,10 @@
                 'Agregado!',
                 'Venta creada exitosamente!',
                 'success'
-              )
+              ).then(function() {
+                   // Después de que el usuario cierre la alerta, recarga la página
+                     window.location.reload();
+                    });
               
             mostrarProductos();
             }

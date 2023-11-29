@@ -59,13 +59,28 @@ class VentaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $datos = ['producto' => $request->producto, 'cantidad' => $request->cantidad ];
-		Venta::create($datos);
-		return response()->json([
-			'status' => 200,
-		]);
-    }
+{
+    $id_producto = $request->input('id_producto');
+    $datos = ['producto' => $request->producto, 'cantidad' => $request->cantidad];
+
+    // Obtener el producto por su ID
+    $producto = Producto::find($id_producto);
+    $stockActual = $producto->stock;
+    $cantidadComprada = $datos['cantidad'];
+
+    // Calcular el nuevo stock
+    $nuevoStock = $stockActual - $cantidadComprada;
+
+    // Actualizar el stock del producto
+    $producto->update(['stock' => $nuevoStock]);
+
+    // Crear la venta
+    Venta::create($datos);
+
+    return response()->json([
+        'status' => 200,
+    ]);
+}
 
  
 
