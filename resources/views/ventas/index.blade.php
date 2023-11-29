@@ -39,7 +39,7 @@
 
 
               <label for="precio">Cantidad</label>
-              <input type="number" name="cantidad" class="form-control" placeholder="Stock" required>
+              <input type="number" name="cantidad" id="cantidad" class="form-control" placeholder="Stock" required>
               <div class="invalid-feedback">Cantidad Obligatoria...</div>
 
 
@@ -94,7 +94,7 @@
 
               <label for="cantidad">Cantidad</label>
               <input type="number" name="cantidad" id="cantidad" class="form-control" required>
-              <div class="invalid-feedback">Precio Obligatorio...</div>
+              <div class="invalid-feedback">Cantidad obligatoria...</div>
 
              
 
@@ -142,33 +142,12 @@
 
     
     $(function() {
-/*
-      /// obtener productos en SELECT
-      $(document).ready(function() {
-        $.get("{{ route('getProductos') }}", function(data) {
-            var select = $("#producto");
-            select.empty();
-            select.append($('<option>', {
-                value: '',
-                text: 'Selecciona Producto',
-                selected: 'selected',
-                disabled: 'disabled'
-            })); 
-            $.each(data, function(key, value) {
-                select.append($('<option>', {
-                    value: value.nombre_producto,
-                    text: value.nombre_producto,
-                    
-                }));
-            });
-        });
-    });
-*/
+
 
      /// Informar Stock Stock
      $("#producto").change(function() {
           var productoSeleccionado = $("#producto").val();
-          var id = $("#producto").val();
+        //  var id = $("#producto").val();
           var id = $("#producto option:selected").data("id");
           var stock = $("#producto option:selected").data("stock");
           console.log(productoSeleccionado)
@@ -183,7 +162,31 @@
       $("#agregarVentaForm").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
-        if (!this.checkValidity()) {
+     
+    var stock = parseInt($("#producto option:selected").data("stock"), 10); // Obtener el stock entero
+    var id_producto = parseInt($("#producto option:selected").data("id"), 10); // Obtener el id entero
+    var cantidadCompra = parseInt($("#cantidad").val(), 10); // Obtener la cantidad de compra entero
+
+    if (cantidadCompra > stock) {
+      Swal.fire({
+      icon: 'warning',
+      title: 'No hay Stock suficiente',
+      text: 'solo quedan ' + stock + ' unidades, estás intentando comprar ' + cantidadCompra,
+    }) 
+    } 
+
+    else if(cantidadCompra <= 0){
+   
+   Swal.fire({
+   icon: 'warning',
+   title: 'agrega mínimo 1 unidad',
+   text: 'La cantidad no puede ser vacia ni negativa',
+   })
+   }
+   
+
+
+    else if (!this.checkValidity()) {
           e.preventDefault();
           $(this).addClass('was-validated');
         } else {
@@ -213,6 +216,7 @@
           
         });
       }
+      
       });
 
      
